@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>QuizYoM Website</title>
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-gray-300 flex flex-col min-h-screen">
+  <div class="text-center text-5xl font-bold font-serif bg-gray-400 text-blue-600 rounded-lg p-3">
+    QuizYoM
+  </div>
+  <div id="main" class="flex-grow">
+    <p class="text-center text-2xl font-bold mt-32 sm:mt-52">Welcome to <span class="font-serif text-blue-700">QuizYoM</span> Website<br>Please choose a type of quiz</p>
+    <div id="category" class="grid grid-cols-2 gap-4 mt-32 sm:mt-60">
+        <button id="football" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('football')">Football</button>
+        <button id="anime" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('anime')">Anime</button>        
+        <button id="general" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('general')">General Info</button>
+        <button id="programming" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('programming')">Programming</button>
+    </div>
+  </div>
+  <div id="quiz-page" class="hidden flex flex-grow flex-col items-center justify-center">
+    <h2 id="quiz-category" class="text-4xl font-bold mt-20"></h2>
+    <div id="question-container" class="mt-10">
+        <p id="question" class="text-2xl text-center bg-red-600 rounded-md text-white mb-2 sm:p-6"></p>
+        <div id="choices" class="grid grid-cols-2 gap-4 mt-6"></div>
+    </div>
+    <button id="next-button" class="bg-blue-500 text-white text-2xl font-semibold mt-3 py-2 px-4 rounded hidden sm:mt-7" onclick="nextQuestion()">Next</button>
+  </div>
+  <div id="result-page" class="hidden flex flex-grow flex-col items-center justify-center">
+    <h2 class="text-4xl font-bold mb-20">Quiz Completed</h2>
+    <p id="result" class="text-2xl font-semibold"></p>
+    <button class="bg-green-600 text-white text-2xl font-semibold mt-3 py-2 px-4 rounded sm:mt-7" onclick="goToMainPage()">Main Page</button>
+  </div>
+  <footer class="footer bg-gray-400 text-blue-600 rounded p-6 text-xl font-semibold">
+      <p>Copyright © 2024 - All rights reserved by DevYousifMokhariq</p>
+  </footer>
+<script>
+  const quizzes = {
+    football: [
+  { question: "Which country won the 2018 FIFA World Cup?", choices: ["Germany", "Brazil", "France", "Argentina"], answer: 2 },
+  { question: "Who is known as 'The King of Football'?", choices: ["Pele", "Maradona", "Cristiano Ronaldo", "Lionel Messi"], answer: 0 },
+  { question: "Who won the Ballon d'Or in 2020?", choices: ["Cristiano Ronaldo", "Robert Lewandowski", "Lionel Messi", "Virgil van Dijk"], answer: 1 },
+  { question: "Which club does Cristiano Ronaldo currently play for?", choices: ["Barcelona", "Juventus", "Manchester United", "Al Nassr"], answer: 3 },
+  { question: "Which country is the most successful in the history of the FIFA World Cup?", choices: ["Brazil", "Italy", "Germany", "Argentina"], answer: 0 },
+  { question: "Which country won the 2014 FIFA World Cup?", choices: ["Brazil", "Germany", "Argentina", "Netherlands"], answer: 1},
+  { question: "What is the name of Barcelona's stadium?", choices: ["Old Trafford", "San Siro", "Camp Nou", "Wembley"], answer: 2 },
+  { question: "Who is the all-time top scorer for the Argentina national football team?", choices: ["Lionel Messi", "Sergio Agüero", "Diego Maradona", "Carlos Tévez"], answer: 0 },
+  { question: "Who is the all-time top scorer in the UEFA Champions League?", choices: ["Cristiano Ronaldo", "Lionel Messi", "Raúl", "Lewandowski"], answer: 0 },
+  { question: "Which country hosted the 2014 FIFA World Cup?", choices: ["Brazil", "South Africa", "Germany", "Russia"], answer: 0 }
+],
+    programming: [
+  { question: "What does HTML stand for?", choices: ["Hyper Text Markup Language", "High-Level Text Markup Language", "Hyperlink and Text Markup Language", "None of the above"], answer: 0 },
+  { question: "Which of the following is not a programming language?", choices: ["Java", "Python", "HTML", "C++"], answer: 2 },
+  { question: "Which of the following is a Python framework for web development?", choices: ["Django", "Laravel", "Spring", "React"], answer: 0 },
+  { question: "What is the default value of the 'position' property in CSS?", choices: ["relative", "absolute", "fixed", "static"], answer: 3 },
+  { question: "What does SQL stand for?", choices: ["Structured Query Language", "Simple Query Language", "Structured Question Language", "Sequential Query Language"], answer: 0 },
+  { question: "Which is the correct syntax to create a function in JavaScript?", choices: ["function myFunction()", "def myFunction()", "create function myFunction()", "func myFunction()"], answer: 0 },
+  { question: "Which of the following is a JavaScript data type?", choices: ["String", "Integer", "Character", "Boolean"], answer: 0 },
+  { question: "What does 'API' stand for?", choices: ["Application Programming Interface", "Application Protocol Interface", "Automated Programming Interface", "None of the above"], answer: 0 },
+  { question: "Which of these is used to style a webpage?", choices: ["HTML", "JavaScript", "CSS", "SQL"], answer: 2 },
+  { question: "Which method is used to remove the last element from an array in JavaScript?", choices: ["pop()", "shift()", "push()", "slice()"], answer: 0 }
+],
+
+    general: [
+  { question: "What is the capital of France?", choices: ["Berlin", "Madrid", "Paris", "Lisbon"], answer: 2 },
+  { question: "Which element has the chemical symbol 'O'?", choices: ["Oxygen", "Osmium", "Ozone", "Oganesson"], answer: 0 },
+  { question: "Which country is known as the Land of the Rising Sun?", choices: ["China", "South Korea", "Japan", "Thailand"], answer: 2 },
+  { question: "What is the capital of Australia?", choices: ["Sydney", "Melbourne", "Canberra", "Brisbane"], answer: 2 },
+  { question: "What is the largest planet in our solar system?", choices: ["Earth", "Mars", "Jupiter", "Saturn"], answer: 2 },
+  { question: "What is the hardest natural substance on Earth?", choices: ["Gold", "Iron", "Diamond", "Platinum"], answer: 2 },
+  { question: "Who painted the Mona Lisa?", choices: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"], answer: 2 },
+  { question: "What is the longest river in the world?", choices: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"], answer: 1 },
+  { question: "In which year did World War II end?", choices: ["1945", "1939", "1950", "1965"], answer: 0 },
+  { question: "What is the currency of Japan?", choices: ["Yuan", "Won", "Yen", "Ringgit"], answer: 2 }
+],
+
+    anime: [
+  { question: "What is the name of the main character in 'Naruto'?", choices: ["Sasuke", "Naruto", "Sakura", "Kakashi"], answer: 1 },
+  { question: "In 'Naruto', which character is known as the 'Last Uchiha'?", choices: ["Sasuke", "Naruto", "Itachi", "Madara"], answer: 0},
+  { question: "Which anime features the character 'Luffy'?", choices: ["Naruto", "One Piece", "Attack on Titan", "Bleach"], answer: 1 },
+  { question: "In 'My Hero Academia', who is known as the 'Symbol of Peace'?", choices: ["All Might", "Endeavor", "Midoriya", "Bakugo"], answer: 0 },
+  { question: "What is the name of the sword wielded by Ichigo Kurosaki in 'Bleach'?", choices: ["Zangetsu", "Tensa Zangetsu", "Bankai", "Swords of the Soul"], answer: 1 },
+  { question: "Who is the protagonist of 'Fullmetal Alchemist: Brotherhood'?", choices: ["Edward Elric", "Alphonse Elric", "Roy Mustang", "Lust"], answer: 0 },
+  { question: "In 'Tokyo Ghoul', what is the name of the organization that fights against ghouls?", choices: ["CCG", "Vorg", "Ghoulish Society", "Clown Organization"], answer: 0 },
+  { question: "In 'Naruto Shippuden', who is the leader of the Akatsuki?", choices: ["Madara Uchiha", "Pain", "Itachi Uchiha", "Orochimaru"], answer: 1 },
+  { question: "What is the name of the main character in 'Death Note'?", choices: ["Light Yagami", "L Lawliet", "Misa Amane", "Ryuk"], answer: 0 },
+  { question: "In 'Hunter x Hunter', what is the name of the main character who is searching for his father?", choices: ["Killua Zoldyck", "Kurapika", "Gon Freecss", "Leorio Paradinight"], answer: 2 }
+]};
+
+  let currentQuiz = [];
+  let currentQuestionIndex = 0;
+  let score = 0;
+
+  function startQuiz(category) {
+    currentQuiz = quizzes[category];
+    currentQuestionIndex = 0;
+    score = 0;
+    document.getElementById('main').classList.add('hidden');
+    document.getElementById('quiz-page').classList.remove('hidden');
+    document.getElementById('quiz-category').innerText = category.charAt(0).toUpperCase() + category.slice(1) + " Quiz";
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const questionData = currentQuiz[currentQuestionIndex];
+    document.getElementById('question').innerText = questionData.question;
+    const choicesContainer = document.getElementById('choices');
+    choicesContainer.innerHTML = '';
+    questionData.choices.forEach((choice, index) => {
+      const button = document.createElement('button');
+      button.innerText = choice;
+      button.className = 'bg-gray-400 text-blue-600 font-semibold text-2xl py-2 px-4 rounded block w-full text-left';
+      button.onclick = () => selectAnswer(index);
+      choicesContainer.appendChild(button);
+    });
+  }
+
+  function selectAnswer(selectedIndex) {
+    if (selectedIndex === currentQuiz[currentQuestionIndex].answer) {
+      score++;
+    }
+    document.getElementById('next-button').classList.remove('hidden');
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < currentQuiz.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+    document.getElementById('next-button').classList.add('hidden');
+  }
+
+  function showResult() {
+    document.getElementById('quiz-page').classList.add('hidden');
+    document.getElementById('result-page').classList.remove('hidden');
+    document.getElementById('result').innerText = `You scored ${score} out of ${currentQuiz.length}`;
+  }
+
+  function goToMainPage() {
+    document.getElementById('result-page').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
