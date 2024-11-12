@@ -15,7 +15,7 @@
   </div>
   <div id="main" class="flex-grow">
     <p class="text-center text-2xl font-bold mt-32 sm:mt-52">Welcome to <span class="font-serif text-blue-700">QuizYoM</span> Website<br>Please choose a type of quiz</p>
-    <div id="category" class="grid grid-cols-2 gap-4 mt-32 sm:mt-60">
+    <div id="category" class="grid grid-cols-2 gap-4 mt-32 px-3 sm:mt-60">
         <button id="football" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('football')">Football</button>
         <button id="anime" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('anime')">Anime</button>        
         <button id="general" class="bg-gray-400 text-blue-600 text-2xl font-semibold rounded-md p-3" onclick="startQuiz('general')">General Info</button>
@@ -24,8 +24,8 @@
   </div>
   <div id="quiz-page" class="hidden flex flex-grow flex-col items-center justify-center">
     <h2 id="quiz-category" class="text-4xl font-bold mt-20"></h2>
-    <div id="question-container" class="mt-10">
-        <p id="question" class="text-2xl text-center bg-red-600 rounded-md text-white mb-2 sm:p-6"></p>
+    <div id="question-container" class="mt-10 px-3">
+        <p id="question" class="text-2xl text-center bg-red-600 rounded-md text-white py-3 mb-2 sm:p-6"></p>
         <div id="choices" class="grid grid-cols-2 gap-4 mt-6"></div>
     </div>
     <button id="next-button" class="bg-blue-500 text-white text-2xl font-semibold mt-3 py-2 px-4 rounded hidden sm:mt-7" onclick="nextQuestion()">Next</button>
